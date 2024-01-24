@@ -6,7 +6,7 @@ const Auth = () => {
   const [signupForm, setSignupForm] = useState(false);
 
   return (
-    <div className="flex justify-center items-center mt-halfScreen">
+    <div className="flex justify-center items-center mt-quarterTopScreen">
       {signupForm ? (
         <SignUpForm onClick={() => setSignupForm(false)} />
       ) : (

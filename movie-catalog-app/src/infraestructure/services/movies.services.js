@@ -49,7 +49,7 @@ export const moviesServices = () => ({
           returnValue = err?.response?.data?.message;
         else
           returnValue =
-            "There was an error while posting your comment. Try it again in a few minutes";
+            "There was an error while rating the movie. Try it again in a few minutes";
       });
     return returnValue;
   },

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { moviesServices } from "../infraestructure/services/movies.services";
 import Modal from "../components/Modal/Modal";
 import Rating from "../components/Rating/Rating";
+import Loader from "../components/Loader/Loader";
+import movieIcon from "../img/icons/movie.svg";
 const Home = () => {
   const navigate = useNavigate();
 
@@ -12,11 +14,15 @@ const Home = () => {
   const [moviesData, setMoviesData] = useState([]);
   const [showRateModal, setShowRateModal] = useState("");
   const [modalMessage, setModalMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = () => {
     moviesServices()
       .getMovies()
-      .then((data) => setMoviesData(data))
+      .then((data) => {
+        setMoviesData(data);
+        setIsLoading(false);
+      })
       .catch((err) => console.error(err));
   };
 
@@ -32,6 +38,7 @@ const Home = () => {
   const handleCloseModal = () => {
     setShowRateModal(false);
     setModalMessage("");
+    fetchData();
   };
 
   const submitRating = (rate) => {
@@ -48,7 +55,13 @@ const Home = () => {
   };
 
   const printMovieList = () => {
-    if (!moviesData.length) return;
+    if (!moviesData.length)
+      return (
+        <div className="text-4xl text-center text-bold pt-24 flex flex-col items-center">
+          <img src={movieIcon} alt="notes icon" />
+          <p className="pt-8">No movie data yet</p>
+        </div>
+      );
     else {
       const movieList = moviesData?.map((movie) => {
         return (
@@ -57,7 +70,11 @@ const Home = () => {
             key={movie._id}
           >
             <div className="flex justify-center items-center">
-              <img className="w-257px" src={movie.cover}></img>
+              <img
+                className="w-257px"
+                src={movie.cover}
+                alt={`${movie.title} cover`}
+              />
             </div>
             <div>
               <p className="font-bold text-xl text-cyberPink pt-4 pb-4">
@@ -70,7 +87,7 @@ const Home = () => {
                 }`}
               >
                 <div className="flex flex-col justify-center items-center gap-5">
-                  <div className="border border-cyberTurquoise rounded-full w-42px h-42px flex justify-center items-center">
+                  <div className="border border-cyberTurquoise rounded-full w-62px h-62px flex justify-center items-center">
                     <p className="text-3xl ">{movie.averageRate}</p>
                   </div>
                   <Button
@@ -112,10 +129,20 @@ const Home = () => {
 
   return (
     <div>
-      <h2 className="text-center p-4 text-xl font-bold pt-6">Movie Database</h2>
-      <div className={`pt-1 pl-3 pr-3 flex flex-col items-center gap-4`}>
-        {printMovieList()}
-      </div>
+      {isLoading ? (
+        <div className="absolute left-1/2 top-1/3 -translate-y-1/2 -translate-x-1/2">
+          <Loader />
+        </div>
+      ) : (
+        <div>
+          <h2 className="text-center p-4 text-4xl font-bold pt-6 ">
+            Movie Database
+          </h2>
+          <div className={`p-3 flex flex-col items-center gap-4`}>
+            {printMovieList()}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./index.css";
 
@@ -15,8 +10,6 @@ import Comments from "./views/Comments/Comments";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 function App() {
-  const userIsLogged = localStorage.getItem("token");
-
   return (
     <Router>
       <Routes>

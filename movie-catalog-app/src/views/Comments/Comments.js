@@ -7,6 +7,7 @@ import Textarea from "../../components/Input/Textarea";
 import Modal from "../../components/Modal/Modal";
 import leftArrowIcon from "../../img/icons/leftArrow.svg";
 import notesIcon from "../../img/icons/notes.svg";
+import { generalServices } from "../../infraestructure/services/general.services";
 
 const Comments = () => {
   const { id } = useParams();
@@ -36,13 +37,6 @@ const Comments = () => {
     setInnerWidth(window.innerWidth);
   }, []);
 
-  const handleFormChange = (value, type) => {
-    setFormData((data) => ({
-      ...data,
-      [type]: value,
-    }));
-  };
-
   const postComment = () => {
     const userId = localStorage.getItem("token");
     const commentData = {
@@ -57,16 +51,28 @@ const Comments = () => {
       });
   };
 
+  const formatDate = (date) => {
+    return generalServices().formatDate(date);
+  };
+
+  const handleFormChange = (value, type) => {
+    setFormData((data) => ({
+      ...data,
+      [type]: value,
+    }));
+  };
+
   const handleCloseModal = () => {
     setShowModal(false);
     setAddComment(false);
     fetchData();
   };
+
   const printComments = () => {
     if (!movieData.comments?.length) {
       return (
         <div className="text-4xl text-center text-bold pt-12 flex flex-col items-center">
-          <img src={notesIcon} alt="lens-icon" />
+          <img src={notesIcon} alt="notes icon" />
           <p className="pt-8">There are no comments yet.</p>
           <p className="pt-4">Be the first to leave one!</p>
         </div>
@@ -79,7 +85,10 @@ const Comments = () => {
             className="p-4 bg-cyberDarkBlue border-2 border-cyberBlue rounded-lg"
             index={comment.id}
           >
-            <p className="font-bold border-b text-lg">{comment.title}</p>
+            <div className="font-bold border-b text-lg flex justify-between">
+              <p>{comment.title}</p>
+              <p>{formatDate(comment.createdAt)}</p>
+            </div>
             <p className="pt-2">{comment.comment}</p>
           </div>
         );
@@ -89,7 +98,7 @@ const Comments = () => {
   };
 
   const addCommentForm = (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-95%">
       <Input
         type="text"
         label="Title"
@@ -121,18 +130,27 @@ const Comments = () => {
 
       <div className="pb-2 pl-3 pr-3 flex flex-col gap-4">
         {!addComment ? (
-          <>
+          <div>
             <div className="flex justify-end">
               <Button text="Add Comment" onClick={() => setAddComment(true)} />
             </div>
-
-            {printComments()}
-          </>
+            <div className="pt-8 flex flex-col gap-4">{printComments()}</div>
+          </div>
         ) : (
-          <>
-            {addCommentForm}
-            <Button text="send" onClick={postComment} />
-          </>
+          <div>
+            <div className="flex justify-end">
+              <Button
+                text="Back to Comments"
+                onClick={() => setAddComment(false)}
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              {addCommentForm}
+              <div className="pt-4 w-257px ">
+                <Button text="Send comment" onClick={postComment} />
+              </div>
+            </div>
+          </div>
         )}
       </div>
 

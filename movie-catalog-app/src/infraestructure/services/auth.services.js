@@ -14,7 +14,8 @@ export const authServices = () => ({
       })
       .catch((err) => {
         console.error(err);
-        if (err.message) returnValue = err?.message;
+        if (err?.response?.data?.message)
+          returnValue = err?.response?.data?.message;
         else
           returnValue =
             "There was an error while trying to login. Try it again in a few minutes";
@@ -26,13 +27,13 @@ export const authServices = () => ({
     await http
       .post("/signup", body)
       .then((user) => {
-        console.log("test user", user);
         saveUser(user);
         returnValue = "success";
       })
       .catch((err) => {
         console.error(err);
-        if (err.message) returnValue = err?.message;
+        if (err?.response?.data?.message)
+          returnValue = err?.response?.data?.message;
         else
           returnValue =
             "There was an error while trying to signup. Try it again in a few minutes";
