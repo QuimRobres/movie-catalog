@@ -63,16 +63,12 @@ router.post("/login", (req, res, next) => {
 });
 
 router.post("/logout", (req, res, next) => {
-  req.logout();
-  return res.status(200).json({ message: "Logout success" });
-});
-
-router.get("/loggedin", (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return res.status(200).json(req.user);
-  } else {
-    return res.status(403).json({ message: "Forbbiden" });
-  }
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    return res.status(200).json({ message: "Success" });
+  });
 });
 
 module.exports = router;
