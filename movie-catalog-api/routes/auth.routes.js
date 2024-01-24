@@ -57,7 +57,6 @@ router.post("/login", (req, res, next) => {
       if (err) {
         return res.status(500).json(err);
       }
-      console.log('test hola')
       return res.status(200).json(theUser);
     });
   })(req, res, next);

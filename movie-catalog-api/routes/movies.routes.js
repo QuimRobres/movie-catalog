@@ -25,7 +25,7 @@ router.post("/:id/postComment", (req, res, next) => {
   };
   Movie.findOneAndUpdate(
     { _id: id },
-    { $push: { comments: newComment } },
+    { $push: { comments: { $each: [newComment], $position: 0 } } },
     { new: true }
   )
     .then(() => res.status(200).json({ message: "Comment added" }))
