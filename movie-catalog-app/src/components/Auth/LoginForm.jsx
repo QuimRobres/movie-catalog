@@ -29,7 +29,6 @@ const LoginForm = ({ onClick }) => {
           setModalMessage(res);
           setShowModal(true);
         }
-        console.log("test kimo success");
       });
   };
 

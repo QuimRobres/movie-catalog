@@ -40,4 +40,13 @@ export const authServices = () => ({
       });
     return returnValue;
   },
+
+  logout: async () => {
+    let returnValue = "";
+    await http.post("/logout").then((res) => {
+      localStorage.removeItem("token");
+      returnValue = res.message;
+    });
+    return returnValue;
+  },
 });

@@ -7,6 +7,8 @@ import Modal from "../components/Modal/Modal";
 import Rating from "../components/Rating/Rating";
 import Loader from "../components/Loader/Loader";
 import movieIcon from "../img/icons/movie.svg";
+import powerOffIcon from "../img/icons/powerOff.svg";
+import { authServices } from "../infraestructure/services/auth.services";
 const Home = () => {
   const navigate = useNavigate();
 
@@ -51,6 +53,14 @@ const Home = () => {
       .rateMovie(showRateModal, rateData)
       .then((response) => {
         setModalMessage(response);
+      });
+  };
+
+  const handleLogout = () => {
+    authServices()
+      .logout()
+      .then((res) => {
+        if (res === "Success") navigate("/auth");
       });
   };
 
@@ -135,7 +145,14 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <h2 className="text-center p-4 text-4xl font-bold pt-6 ">
+          <div
+            className="bg-cyberBlue rounded-full absolute right-3 top-3 flex items-center"
+            onClick={handleLogout}
+          >
+            <img src={powerOffIcon} alt="power off" className="p-0.5" />
+          </div>
+
+          <h2 className="text-center p-4 text-4xl font-bold pt-8 ">
             Movie Database
           </h2>
           <div className={`p-3 flex flex-col items-center gap-4`}>
