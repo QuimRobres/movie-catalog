@@ -46,6 +46,12 @@ router.post("/:id/rate", async (req, res) => {
 
   const rateExists = rateValues.some((item) => item.userId === userId);
 
+  if (rateExists) {
+    return res
+      .status(403)
+      .json({ message: "Rate for this movie already submitted" });
+  }
+
   if (!rateExists) {
     rateValues.push({ rate: rate, userId: userId });
   }
@@ -55,7 +61,7 @@ router.post("/:id/rate", async (req, res) => {
     rateValues.forEach((rate) => {
       total += rate.rate;
     });
-    return total / rateValues.length;
+    return (total / rateValues.length).toFixed(1);
   };
 
   const newAverageRate = calculateRateAverage();
@@ -64,10 +70,9 @@ router.post("/:id/rate", async (req, res) => {
     { _id: id },
     { rateList: rateValues, averageRate: newAverageRate },
     { new: true }
-  ).then((res) => {
-    console.log("test kimo res", res);
-  });
-  console.log("rateValue", rateValues);
+  )
+    .then(() => res.status(200).json({ message: "Rate submitted" }))
+    .catch((err) => res.status(500).json(err));
 });
 
 router.post("/", (req, res, next) => {
