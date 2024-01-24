@@ -1,7 +1,7 @@
 import { http } from "../plugins/http/http";
 
 const saveUser = (user) => {
-  window.localStorage.setItem("token", user._id);
+  window.localStorage.setItem("token", user.id);
 };
 export const authServices = () => ({
   login: async (body) => {
@@ -26,6 +26,7 @@ export const authServices = () => ({
     await http
       .post("/signup", body)
       .then((user) => {
+        console.log("test user", user);
         saveUser(user);
         returnValue = "success";
       })

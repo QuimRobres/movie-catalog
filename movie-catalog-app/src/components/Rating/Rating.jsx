@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Button/Button";
 
-const Rating = ({ bulletsQuantity = 5, submitRate }) => {
+const Rating = ({ bulletsQuantity = 5, submitRate, rateText }) => {
   const bulletsArray = Array.from({ length: bulletsQuantity });
   const [selectedBullet, setSelectedBullet] = useState(-1);
 
@@ -25,9 +25,13 @@ const Rating = ({ bulletsQuantity = 5, submitRate }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-8">
-      <div className="flex gap-2">{printBullets()}</div>
-      <Button text="Send Rate" onClick={onSubmitClick} />
+    <div className="flex flex-col justify-center items-center gap-6">
+      <div className="flex flex-col justify-center items-center gap-3">
+        <p>Rate the {rateText} :</p>
+        <div className="flex gap-2">{printBullets()}</div>
+      </div>
+
+      <Button text="Send" onClick={onSubmitClick} />
     </div>
   );
 };

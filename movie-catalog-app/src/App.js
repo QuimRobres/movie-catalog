@@ -12,26 +12,22 @@ import Auth from "./views/Auth/Auth";
 import Home from "./views/Home";
 import Comments from "./views/Comments/Comments";
 
+import PrivateRoutes from "./routes/PrivateRoutes";
+import PublicRoutes from "./routes/PublicRoutes";
 function App() {
   const userIsLogged = localStorage.getItem("token");
 
-  
   return (
     <Router>
       <Routes>
-        <Route
-          path="/auth"
-          element={!userIsLogged ? <Auth /> : <Navigate to="/" />}
-        />
+        <Route element={<PublicRoutes />}>
+          <Route path="/auth" element={<Auth />} />
+        </Route>
 
-        <Route
-          path="/"
-          element={userIsLogged ? <Home /> : <Navigate to="/auth" />}
-        />
-        <Route
-          path="/comments/:id"
-          element={userIsLogged ? <Comments /> : <Navigate to="/auth" />}
-        />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/comments/:id" element={<Comments />} />
+        </Route>
       </Routes>
     </Router>
   );

@@ -7,7 +7,7 @@ const Button = ({ text, onClick }) => {
 
   return (
     <div
-      className=" bg-cyberPurple p-2 pl-8 pr-8 rounded flex justify-center items-center w-150px"
+      className=" bg-cyberPurple p-2 pl-8 pr-8 rounded flex justify-center items-center "
       onClick={handleClick}
     >
       <p className="font-bold text-center">{text}</p>

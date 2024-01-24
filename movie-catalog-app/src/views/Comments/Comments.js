@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { moviesServices } from "../../infraestructure/services/movies.services";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import Textarea from "../../components/Input/Textarea";
 import Modal from "../../components/Modal/Modal";
+import leftArrowIcon from "../../img/icons/leftArrow.svg";
+import notesIcon from "../../img/icons/notes.svg";
 
 const Comments = () => {
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
+  const [innerWidth, setInnerWidth] = useState();
   const [addComment, setAddComment] = useState(false);
   const [movieData, setMovieData] = useState([]);
   const [formData, setFormData] = useState({
@@ -18,6 +23,7 @@ const Comments = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+
   const fetchData = () => {
     moviesServices()
       .getMovieComments(id)
@@ -27,6 +33,7 @@ const Comments = () => {
 
   useEffect(() => {
     fetchData();
+    setInnerWidth(window.innerWidth);
   }, []);
 
   const handleFormChange = (value, type) => {
@@ -57,15 +64,22 @@ const Comments = () => {
   };
   const printComments = () => {
     if (!movieData.comments?.length) {
-      return <div>nada</div>;
+      return (
+        <div className="text-4xl text-center text-bold pt-12 flex flex-col items-center">
+          <img src={notesIcon} alt="lens-icon" />
+          <p className="pt-8">There are no comments yet.</p>
+          <p className="pt-4">Be the first to leave one!</p>
+        </div>
+      );
     } else {
       const commentsList = movieData.comments.map((comment) => {
+        console.log(comment);
         return (
           <div
             className="p-4 bg-cyberDarkBlue border-2 border-cyberBlue rounded-lg"
             index={comment.id}
           >
-            <p className="font-bold">{comment.userName}</p>
+            <p className="font-bold border-b text-lg">{comment.title}</p>
             <p className="pt-2">{comment.comment}</p>
           </div>
         );
@@ -91,7 +105,17 @@ const Comments = () => {
 
   return (
     <div>
-      <h2 className="text-center p-4 text-lg font-bold">
+      <img
+        src={leftArrowIcon}
+        alt="left-arrow-icon"
+        className="absolute top-4 left-3"
+        onClick={() => navigate("/")}
+      />
+      <h2
+        className={`text-center p-4 text-lg font-bold ${
+          innerWidth < 410 ? "pt-12" : ""
+        }`}
+      >
         Comments for {movieData.title}
       </h2>
 
@@ -114,7 +138,9 @@ const Comments = () => {
 
       {showModal ? (
         <Modal onClose={handleCloseModal}>
-          <p>{modalMessage}</p>
+          <p className="text-center w-150px text-lg font-bold">
+            {modalMessage}
+          </p>
         </Modal>
       ) : null}
     </div>

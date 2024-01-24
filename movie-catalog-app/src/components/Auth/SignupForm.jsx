@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import { authServices } from "../../infraestructure/services/auth.services";
 
 const SignUpForm = ({ onClick }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,7 +29,7 @@ const SignUpForm = ({ onClick }) => {
     authServices()
       .signup(userData)
       .then(() => {
-        console.log("signed up");
+        navigate("/");
       });
   };
   return (

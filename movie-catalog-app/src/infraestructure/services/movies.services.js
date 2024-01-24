@@ -1,4 +1,5 @@
 import { http } from "../plugins/http/http";
+
 export const moviesServices = () => ({
   getMovies: async () => {
     let movieData = [];
@@ -37,13 +38,19 @@ export const moviesServices = () => ({
   },
 
   rateMovie: async (id, rateData) => {
-    await http.post(`/movies/${id}/rate`, rateData).then((data) => {
-      console.log("trest kimo data", data);
-    });
-    /*     let returnValue = "";
-    await http.post(`/movies/${id}/comments`).then((data) => {
-      console.log("test kimo data", data);
-    });
-    returnValue; */
+    let returnValue = "";
+    await http
+      .post(`/movies/${id}/rate`, rateData)
+      .then((res) => {
+        returnValue = res.message;
+      })
+      .catch((err) => {
+        if (err?.response?.data?.message)
+          returnValue = err?.response?.data?.message;
+        else
+          returnValue =
+            "There was an error while posting your comment. Try it again in a few minutes";
+      });
+    return returnValue;
   },
 });
