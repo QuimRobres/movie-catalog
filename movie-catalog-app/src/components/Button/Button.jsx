@@ -1,13 +1,15 @@
 import React from "react";
 
-const Button = ({ text, onClick }) => {
+const Button = ({ text, onClick, isDisabled }) => {
   const handleClick = () => {
-    if (onClick) onClick();
+    if (onClick && !isDisabled) onClick();
   };
 
   return (
     <div
-      className=" bg-cyberPurple p-2 pl-8 pr-8 rounded flex justify-center items-center w-150px"
+      className={`bg-cyberPurple p-2 pl-8 pr-8 rounded flex justify-center items-center ${
+        isDisabled ? "opacity-35 " : ""
+      } `}
       onClick={handleClick}
     >
       <p className="font-bold text-center">{text}</p>

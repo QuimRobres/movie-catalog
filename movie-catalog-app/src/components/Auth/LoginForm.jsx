@@ -1,8 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import { authServices } from "../../infraestructure/services/auth.services";
+import Modal from "../../components/Modal/Modal";
+
 const LoginForm = ({ onClick }) => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,9 +26,16 @@ const LoginForm = ({ onClick }) => {
     console.log("formdata", formData);
     authServices()
       .login(formData)
-      .then(() => {
-        console.log("test kimo success");
+      .then((res) => {
+        if (res !== "success") {
+          setModalMessage(res);
+          setShowModal(true);
+        } else navigate("/");
       });
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
   return (
     <div className="flex pl-4 pr-4 flex-col border-2 border-cyberBlue rounded-xl items-center w-3/4 pt-16 pb-8  shadow-lg  shadow-cyberBlue gap-8 bg-cyberDarkBlue">
@@ -45,6 +59,13 @@ const LoginForm = ({ onClick }) => {
           Register Now!
         </p>
       </div>
+      {showModal ? (
+        <Modal onClose={handleCloseModal}>
+          <p className="text-center w-150px text-lg font-bold">
+            {modalMessage}
+          </p>
+        </Modal>
+      ) : null}
     </div>
   );
 };
