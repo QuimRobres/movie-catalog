@@ -27,7 +27,7 @@ const Comments = () => {
 
   const fetchData = () => {
     moviesServices()
-      .getMovieComments(id)
+      .getMovie(id)
       .then((data) => setMovieData(data))
       .catch((err) => console.error(err));
   };

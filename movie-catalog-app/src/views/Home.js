@@ -43,6 +43,14 @@ const Home = () => {
     fetchData();
   };
 
+  const handleLogout = () => {
+    authServices()
+      .logout()
+      .then((res) => {
+        if (res === "Success") navigate("/auth");
+      });
+  };
+
   const submitRating = (rate) => {
     const userId = localStorage.getItem("token");
     const rateData = {
@@ -53,14 +61,6 @@ const Home = () => {
       .rateMovie(showRateModal, rateData)
       .then((response) => {
         setModalMessage(response);
-      });
-  };
-
-  const handleLogout = () => {
-    authServices()
-      .logout()
-      .then((res) => {
-        if (res === "Success") navigate("/auth");
       });
   };
 
@@ -151,7 +151,6 @@ const Home = () => {
           >
             <img src={powerOffIcon} alt="power off" className="p-0.5" />
           </div>
-
           <h2 className="text-center p-4 text-4xl font-bold pt-8 ">
             Movie Database
           </h2>

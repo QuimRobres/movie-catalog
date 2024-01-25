@@ -10,10 +10,10 @@ export const moviesServices = () => ({
     return movieData;
   },
 
-  getMovieComments: async (id) => {
+  getMovie: async (id) => {
     let movieData = [];
 
-    await http.get(`/movies/${id}/comments`).then((data) => {
+    await http.get(`/movies/${id}`).then((data) => {
       movieData = data;
     });
 

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import { authServices } from "../../infraestructure/services/auth.services";
 import Modal from "../../components/Modal/Modal";
 
 const LoginForm = ({ onClick }) => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
@@ -28,7 +30,7 @@ const LoginForm = ({ onClick }) => {
         if (res !== "success") {
           setModalMessage(res);
           setShowModal(true);
-        }
+        } else navigate("/");
       });
   };
 

@@ -27,7 +27,7 @@ const Input = ({
           style={{ background: "none", width: "100%" }}
         />
       </div>
-      {errorMessage ? <p className="absolute">{errorMessage}</p> : null}
+      {errorMessage ? <p className="absolute text-sm">{errorMessage}</p> : null}
     </div>
   );
 };
